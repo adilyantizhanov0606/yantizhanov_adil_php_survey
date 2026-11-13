@@ -11,97 +11,63 @@ $errors = [];
 
 // validating text inputs
 
+function validateText($value,$fieldName,$minLength,$maxLength) {
+
+    if (empty($value)) {
+        return $fieldName . ' cannot be empty';
+    }
+
+    if (strlen($value) < $minLength) {
+        return $fieldName . ' must be at least ' . $minLength . ' characters';
+    }
+
+    if (strlen($value) > $maxLength) {
+        return $fieldName . ' cannot exceed ' . $maxLength . ' characters';
+    }
+
+    return null;
+}
+
 $firstName = $data['firstName'] ?? '';
-
-if (strlen($firstName) < 2) {
-    $errors['firstName'] = 'First name must be at least 2 characters';
+$firstNameError = validateText($firstName, 'First name', 2, 50);
+if ($firstNameError) {
+    $errors['firstName'] = $firstNameError;
 }
-
-if (strlen($firstName) > 50) {
-    $errors['firstName'] = 'First name cannot exceed 50 characters';
-}
-
-if (empty($firstName)) {
-    $errors['firstName'] = 'First name cannot be empty';
-}
-
 
 $lastName = $data['lastName'] ?? '';
-
-if (strlen($lastName) < 2) {
-    $errors['lastName'] = 'Last name must be at least 2 characters';
+$lastNameError = validateText($lastName, 'Last name', 2, 50);
+if ($lastNameError) {
+    $errors['lastName'] = $lastNameError;
 }
-
-if (strlen($lastName) > 50) {
-    $errors['lastName'] = 'Last name cannot exceed 50 characters';
-}
-
-if (empty($lastName)) {
-    $errors['lastName'] = 'Last name cannot be empty';
-}
-
 
 $favouriteArtist = $data['favouriteArtist'] ?? '';
-
-if (strlen($favouriteArtist) < 2) {
-    $errors['favouriteArtist'] = 'Favourite artist must be at least 2 characters';
+$favouriteArtistError = validateText($favouriteArtist, 'Favourite artist', 2, 100);
+if ($favouriteArtistError) {
+    $errors['favouriteArtist'] = $favouriteArtistError;
 }
-
-if (strlen($favouriteArtist) > 100) {
-    $errors['favouriteArtist'] = 'Favourite artist cannot exceed 100 characters';
-}
-
-if (empty($favouriteArtist)) {
-    $errors['favouriteArtist'] = 'Favourite artist cannot be empty';
-}
-
 
 $favouriteSong = $data['favouriteSong'] ?? '';
-
-if (strlen($favouriteSong) < 2) {
-    $errors['favouriteSong'] = 'Favourite song must be at least 2 characters';
+$favouriteSongError = validateText($favouriteSong, 'Favourite song', 2, 100);
+if ($favouriteSongError) {
+    $errors['favouriteSong'] = $favouriteSongError;
 }
-
-if (strlen($favouriteSong) > 100) {
-    $errors['favouriteSong'] = 'Favourite song cannot exceed 100 characters';
-}
-
-if (empty($favouriteSong)) {
-    $errors['favouriteSong'] = 'Favourite song cannot be empty';
-}
-
 
 $favouriteAlbum = $data['favouriteAlbum'] ?? '';
-
-if (strlen($favouriteAlbum) < 2) {
-    $errors['favouriteAlbum'] = 'Favourite album must be at least 2 characters';
+$favouriteAlbumError = validateText($favouriteAlbum, 'Favourite album', 2, 100);
+if ($favouriteAlbumError) {
+    $errors['favouriteAlbum'] = $favouriteAlbumError;
 }
-
-if (strlen($favouriteAlbum) > 100) {
-    $errors['favouriteAlbum'] = 'Favourite album cannot exceed 100 characters';
-}
-
-if (empty($favouriteAlbum)) {
-    $errors['favouriteAlbum'] = 'Favourite album cannot be empty';
-}
-
 
 $favouriteInstrument = $data['favouriteInstrument'] ?? '';
-
-if (strlen($favouriteInstrument) < 2) {
-    $errors['favouriteInstrument'] = 'Favourite instrument must be at least 2 characters';
-}
-
-if (strlen($favouriteInstrument) > 100) {
-    $errors['favouriteInstrument'] = 'Favourite instrument cannot exceed 100 characters';
-}
-
-if (empty($favouriteInstrument)) {
-    $errors['favouriteInstrument'] = 'Favourite instrument cannot be empty';
+$favouriteInstrumentError = validateText($favouriteInstrument, 'Favourite instrument', 2, 100);
+if ($favouriteInstrumentError) {
+    $errors['favouriteInstrument'] = $favouriteInstrumentError;
 }
 
 
-// Validate checkboxes
+
+
+// Validating checkboxes
 
 $musicGenres = $data['musicGenres'] ?? [];
 
@@ -146,35 +112,20 @@ if (empty($musicDiscovery)) {
 }
 
 
- // validating the textarea inputs
+ // validating the textarea inputs using the same function as with text inputs
 
 $concertExperience = $data['concertExperience'] ?? '';
+$concertExperienceError = validateText($concertExperience, 'Concert experience', 10, 1000);
 
-if (strlen($concertExperience) < 10) {
-    $errors['concertExperience'] = 'Concert experience must be at least 10 characters';
+if ($concertExperienceError) {
+    $errors['concertExperience'] = $concertExperienceError;
 }
-
-if (strlen($concertExperience) > 1000) {
-    $errors['concertExperience'] = 'Concert experience cannot exceed 1000 characters';
-}
-
-if (empty($concertExperience)) {
-    $errors['concertExperience'] = 'Concert experience cannot be empty';
-}
-
 
 $musicInfluence = $data['musicInfluence'] ?? '';
+$musicInfluenceError = validateText($musicInfluence, 'Music influence', 10, 1000);
 
-if (strlen($musicInfluence) < 10) {
-    $errors['musicInfluence'] = 'Music influence must be at least 10 characters';
-}
-
-if (strlen($musicInfluence) > 1000) {
-    $errors['musicInfluence'] = 'Music influence cannot exceed 1000 characters';
-}
-
-if (empty($musicInfluence)) {
-    $errors['musicInfluence'] = 'Music influence cannot be empty';
+if ($musicInfluenceError) {
+    $errors['musicInfluence'] = $musicInfluenceError;
 }
 
 
@@ -187,10 +138,27 @@ if (count($errors) > 0) {
     exit;
 }
 
+// send answers to my email
+
+$to = 'ilovephpimnotlyingplshelp@fanshaweonline.ca';
+$subject = 'Music Preferences Survey';
+
+$message = "Music Preferences Survey Answers\n\n";
+
+foreach ($data as $question => $answer) {
+
+    if (is_array($answer)) {
+        $answer = implode(', ', $answer);
+    }
+
+    $message .= $question . ': ' . $answer . "\n";
+}
+
+mail($to, $subject, $message);
 
 // show that we were successful in the session
 $_SESSION['success'] = true;
 
-// redirect back to index.php
-header('Location: ../index.php');
+// redirect to the success page
+header('Location: ../success.html');
 exit;
