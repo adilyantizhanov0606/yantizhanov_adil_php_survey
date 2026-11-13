@@ -1,0 +1,57 @@
+body {
+    font-family: "Montserrat", sans-serif;  
+    font-size: 12px;
+}
+
+#survey {
+    display: flex;
+    flex-direction:column;  
+    align-items: center;
+}
+
+#survey label {
+ margin-bottom: 50px;
+}
+
+#survey h2 {
+ margin-top: 20px;
+ margin-bottom: 10px;
+ font-weight: bold;
+ text-transform: uppercase;
+
+}
+
+#survey input {
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+#survey input {
+    margin-top: 50px;
+}
+
+#survey p {
+    margin-top: 50px;
+    margin-bottom: 20px;
+}
+
+#survey textarea {
+    margin-right: 30px;
+}
+
+#survey button {
+    margin-bottom:30px;
+    background-color:#6fe321;
+    border: none;
+    border-radius: 10px;
+    padding:10px;
+    color: #ffff;
+}
+
+
+@media screen and (max-width: 768px) {
+    body {
+    font-size: 9px;
+}
+
+}
